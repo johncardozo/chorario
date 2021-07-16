@@ -6,7 +6,7 @@ Este programa escrito en Python intenta asignar profesores a cursos y visceversa
 
 Este programa toma como insumo 2 archivos de excel ubicados en el folder `input`:
 
-- chorario.xlsx
+- cursos.xlsx
 - disponibilidad.xlsx
 
 ### chorario.xlsx
