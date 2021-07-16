@@ -1,4 +1,2 @@
 .vscode
-output/*.log
-output/resultado_cursos.xlsx
-output/resultado_profesores.xlsx
+output

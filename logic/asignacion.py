@@ -1,9 +1,13 @@
 from datetime import datetime
+from pathlib import Path
 
 def asignar(cursos, profes):
     '''
     Asigna los profesores a los cursos y visceversa
     '''
+    # Verifica que el directorio de salida exista, de lo contrario lo crea
+    Path("output").mkdir(parents=True, exist_ok=True)
+
     # Genera el archivo de log
     nombre_archivo = f'output/{datetime.now().strftime("%Y-%m-%d-%H-%M-%S")}.log'
 

@@ -1,10 +1,13 @@
 from openpyxl import Workbook
+from pathlib import Path
 
 def generar_excel_cursos(cursos):
     '''
     Genera el archivo de Excel con la asignación de profesores a cursos
     '''
-    
+    # Verifica que el directorio de salida exista, de lo contrario lo crea
+    Path("output").mkdir(parents=True, exist_ok=True)
+
     # Crea el libro de Excel
     wb = Workbook()
     # Obtiene la hoja activa
@@ -44,6 +47,9 @@ def generar_excel_profes(profes):
     '''
     Genera la asignación de cursos a la disponibilidad de los profesores
     '''
+    # Verifica que el directorio de salida exista, de lo contrario lo crea
+    Path("output").mkdir(parents=True, exist_ok=True)
+
     # Crea el libro de Excel
     wb = Workbook()
     # Obtiene la hoja activa
