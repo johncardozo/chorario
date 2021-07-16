@@ -13,18 +13,26 @@ Este programa toma como insumo 2 archivos de excel ubicados en el folder `input`
 
 Este archivo de Excel contiene los cursos con los días y horas a las que se dicta cada curso.
 Las columnas del archivo son las siguientes:
+
 A. curso: codigo del curso
+
 B. dia: L,M,I,J,V,S,
+
 C. hora inicial: (p.e. 700, 1630)
+
 D. hora final: (p.e. 1000, 1800)
 
 ### disponibilidad.xlsx
 
 Este archivo de Excel contiene las franjas horarias de disponibilidad de cada uno de los profesores.
 Las columnas del archivo son las siguientes:
+
 A. profesor: nombre del profesor
+
 B. dia: L,M,I,J,V,S,
+
 C. hora inicial: (p.e. 700, 1630)
+
 D. hora final: (p.e. 1000, 1800)
 
 ### Observaciones de los archivos de entrada
