@@ -16,7 +16,7 @@ Las columnas del archivo son las siguientes:
 
 A. curso: codigo del curso
 
-B. dia: L,M,I,J,V,S,
+B. dia: L, M, I, J, V, S, D
 
 C. hora inicial: (p.e. 700, 1630)
 
@@ -29,7 +29,7 @@ Las columnas del archivo son las siguientes:
 
 A. profesor: nombre del profesor
 
-B. dia: L,M,I,J,V,S,
+B. dia: L, M, I, J, V, S, D
 
 C. hora inicial: (p.e. 700, 1630)
 
@@ -40,10 +40,11 @@ D. hora final: (p.e. 1000, 1800)
 - La lista de columnas de cada archivo debe estar desde la A hasta la D según se indica en los puntos anteriores.
 - La nomenclatura de los días debe ser igual en ambos archivos, tanto en los días de la semana como en las horas.
 - Las horas de inicio y fin deben ser coincidentes en ambos archivos. Por ejemplo, si las franjas de los cursos son 700-800, 800-900, 900-1000, la disponibilidad del profesor debería ser 700-800 y 800-900, y no: 700-900.
+- En el folder `input`se pueden encontrar 2 ejemplos de los archivos: `cursos_sample.xlsx` y `disponibilidad_sample.xlsx`.
 
 ## Archivos de Salida
 
-Este programa genera 2 archivos de excel ubicados en el folder `output` y un archivo de `log`. El archivo de log tiene como nombre la esrtuctura `YYYY-MM-DD-HH-MM-SS.log`.
+Este programa genera 2 archivos de excel ubicados en el folder `output` y un archivo de `log`. El archivo de log tiene como nombre la estructura `YYYY-MM-DD-HH-MM-SS.log`.
 
 - resultado_cursos.xlsx
 - resultado_profesores.xlsx

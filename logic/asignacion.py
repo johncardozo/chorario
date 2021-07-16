@@ -1,6 +1,7 @@
 from datetime import datetime
 from pathlib import Path
 
+
 def asignar(cursos, profes):
     '''
     Asigna los profesores a los cursos y visceversa
@@ -23,14 +24,15 @@ def asignar(cursos, profes):
             encontradas = []
             for franja in curso["franjas"]:
                 # Busca la franja del curso en las disponibilidades del profesor
-                encontrada = next((d for d in profe["disponibilidad"] if d["disponible"] and d["dia"] == franja["dia"] and d["hi"] == franja["hi"] and franja["hf"] == franja["hf"]), None)
+                encontrada = next((d for d in profe["disponibilidad"] if d["disponible"] and d["dia"] == franja["dia"]
+                                  and d["hi"] == franja["hi"] and franja["hf"] == franja["hf"] and franja["asignada"] == False), None)
 
                 # Si encuentra la franja, incrementa el conteo y agrega la disponibilidad del profesor
                 if encontrada:
                     matches = matches + 1
                     encontradas.append(encontrada)
-            
-            # Verifica si la cantidad de
+
+            # Verifica si todas las franjas de curso coincidieron
             if matches == len(curso["franjas"]):
                 linea = f'curso={curso["curso"]}, profesor={profe["profesor"]}'
                 # Muestra el log
@@ -43,11 +45,10 @@ def asignar(cursos, profes):
                     franja["asignada"] = True
                     franja["profesor"] = profe["profesor"]
 
-                # Asigna el curso a las disponibilidades del profesor 
+                # Asigna el curso a las disponibilidades del profesor
                 for e in encontradas:
                     e["disponible"] = False
                     e["curso"] = curso["curso"]
 
     # Cierra el archivo de log
-    archivo.close()      
-        
+    archivo.close()
