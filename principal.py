@@ -1,12 +1,18 @@
 from openpyxl import load_workbook
 from logic import cursos, disponibilidad, asignacion, generacion
+import time
+
 
 def main():
+
+    # Registra el tiempo de inicio
+    hora_inicio = time.time()
+
     print('Iniciando proceso...')
-    
+
     # Carga los cursos del excel
     lista_cursos = cursos.cargar_cursos()
-    
+
     # Carga los profesores del excel
     lista_profes = disponibilidad.cargar_disponibilidad()
 
@@ -15,8 +21,11 @@ def main():
 
     # Genera el Excel resultado de la asignación
     generacion.generar_excel(lista_cursos, lista_profes)
-    
+
+    # Muestra el tiempo de ejecución
     print('Proceso finalizado!')
+    print("Tiempo de ejecución: %s segundos" % (time.time() - hora_inicio))
+
 
 if __name__ == "__main__":
     # Se ejecuta sólo si se ejecuta como un script

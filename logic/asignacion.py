@@ -34,9 +34,12 @@ def asignar(cursos, profes):
 
             # Verifica si todas las franjas de curso coincidieron
             if matches == len(curso["franjas"]):
+                # Genera la linea del log
                 linea = f'curso={curso["curso"]}, profesor={profe["profesor"]}'
+
                 # Muestra el log
                 print(linea)
+
                 # Guarda el log
                 archivo.write(f'{linea}\n')
 
@@ -49,6 +52,11 @@ def asignar(cursos, profes):
                 for e in encontradas:
                     e["disponible"] = False
                     e["curso"] = curso["curso"]
+
+                # Dado que se encontró un profesor para el curso,
+                # no se necesita seguir buscando en la lista de profesores.
+                # Este break rompe el ciclo de profesores
+                break
 
     # Cierra el archivo de log
     archivo.close()
