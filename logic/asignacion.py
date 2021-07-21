@@ -23,7 +23,7 @@ def asignar(cursos, profes):
             matches = 0
             encontradas = []
             for franja in curso["franjas"]:
-                # Busca la franja del curso en las disponibilidades del profesor
+                # Busca la siguiente franja del curso en las disponibilidades del profesor
                 encontrada = next((d for d in profe["disponibilidad"] if d["disponible"] and d["dia"] == franja["dia"]
                                   and d["hi"] == franja["hi"] and franja["hf"] == franja["hf"] and franja["asignada"] == False), None)
 
@@ -38,10 +38,13 @@ def asignar(cursos, profes):
                 linea = f'curso={curso["curso"]}, profesor={profe["profesor"]}'
 
                 # Muestra el log
-                print(linea)
+                # print(linea)
 
                 # Guarda el log
                 archivo.write(f'{linea}\n')
+
+                # Asigna el profesor al curso
+                curso['profesor'] = profe["profesor"]
 
                 # Asigna el profesor a las franjas del curso
                 for franja in curso["franjas"]:

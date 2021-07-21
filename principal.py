@@ -1,6 +1,11 @@
-from openpyxl import load_workbook
-from logic import cursos, disponibilidad, asignacion, generacion
 import time
+from openpyxl import load_workbook
+from logic import(
+    cursos,
+    disponibilidad,
+    asignacion,
+    generacion,
+    reporte)
 
 
 def main():
@@ -22,8 +27,11 @@ def main():
     # Genera el Excel resultado de la asignación
     generacion.generar_excel(lista_cursos, lista_profes)
 
+    # Muestra el reporte de ejecución
+    reporte.mostrar_reporte(lista_cursos, lista_profes)
+
     # Muestra el tiempo de ejecución
-    print('Proceso finalizado!')
+    print('\nProceso finalizado!')
     print("Tiempo de ejecución: %s segundos" % (time.time() - hora_inicio))
 
 
