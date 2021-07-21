@@ -19,6 +19,16 @@ def asignar(cursos, profes):
     for curso in cursos:
         # Recorre los profesores
         for profe in profes:
+
+            # Obtiene la cantidad de cursos asignados al profesor
+            cursos_profesor = [
+                c for c in cursos if 'profesor' in c and c['profesor'] == profe['profesor']]
+
+            # Verifica que las topes máximos de asignación
+            # no sean superados por la cantidad de cursos asignados
+            if profe["tipo"] == 'TC' and len(cursos_profesor) == 6 or profe["tipo"] == 'MT' and len(cursos_profesor) == 5:
+                break
+
             # Recorre las franjas del curso
             matches = 0
             encontradas = []
@@ -34,15 +44,6 @@ def asignar(cursos, profes):
 
             # Verifica si todas las franjas de curso coincidieron
             if matches == len(curso["franjas"]):
-                # Genera la linea del log
-                linea = f'curso={curso["curso"]}, profesor={profe["profesor"]}'
-
-                # Muestra el log
-                # print(linea)
-
-                # Guarda el log
-                archivo.write(f'{linea}\n')
-
                 # Asigna el profesor al curso
                 curso['profesor'] = profe["profesor"]
 
@@ -55,6 +56,10 @@ def asignar(cursos, profes):
                 for e in encontradas:
                     e["disponible"] = False
                     e["curso"] = curso["curso"]
+
+                # Escribe en el log
+                archivo.write(
+                    f'curso={curso["curso"]}, profesor={profe["profesor"]}\n')
 
                 # Dado que se encontró un profesor para el curso,
                 # no se necesita seguir buscando en la lista de profesores.

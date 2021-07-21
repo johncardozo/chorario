@@ -30,11 +30,13 @@ def mostrar_reporte(lista_cursos, lista_profes):
         cursos_profe = [
             c for c in lista_cursos if 'profesor' in c and c['profesor'] == profe['profesor']]
         print(
-            f'Profesor: {profe["profesor"]} - Cursos: {len(cursos_profe)}')
-        if len(cursos_profe) > 5:
-            lista_profes_revisar.append(
-                f'Profesor: {profe["profesor"]} - Cursos: {len(cursos_profe)}')
+            f'Profesor: {profe["profesor"]} - Tipo: {profe["tipo"]} - Cursos: {len(cursos_profe)}', end="")
 
-    print('\nPROFESORES A REVISAR:')
-    for pr in lista_profes_revisar:
-        print(pr)
+        # Imprime los cursos del profesor
+        print("[", end="")
+        for index, c in enumerate(cursos_profe):
+            print(f'{c["curso"]}', end="")
+            # Verifica si se imprime la coma entre los cursos
+            if index != len(cursos_profe)-1:
+                print(',', end="")
+        print("]")
