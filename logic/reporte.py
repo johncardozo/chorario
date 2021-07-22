@@ -8,7 +8,7 @@ def mostrar_reporte(lista_cursos, lista_profes):
     cursos_asignados = 0
     for curso in lista_cursos:
         # Verifica si el curso tiene un profesor asignado
-        if 'profesor' in curso:
+        if curso['asignado'] and 'profesor' in curso:
             cursos_asignados = cursos_asignados + 1
             print(f'Curso: {curso["curso"]} - Profesor: {curso["profesor"]}')
         else:
@@ -24,19 +24,15 @@ def mostrar_reporte(lista_cursos, lista_profes):
 
     print('-' * 40)
     print('\nPROFESORES')
-    lista_profes_revisar = []
     for profe in lista_profes:
-        # Obtiene los cursos donde el profesor está asignado
-        cursos_profe = [
-            c for c in lista_cursos if 'profesor' in c and c['profesor'] == profe['profesor']]
         print(
-            f'Profesor: {profe["profesor"]} - Tipo: {profe["tipo"]} - Cursos: {len(cursos_profe)}', end="")
+            f'Profesor: {profe["profesor"]} - Tipo: {profe["tipo"]} - Cursos: {len(profe["cursos"])}', end="")
 
         # Imprime los cursos del profesor
         print("[", end="")
-        for index, c in enumerate(cursos_profe):
-            print(f'{c["curso"]}', end="")
+        for index, c in enumerate(profe["cursos"]):
+            print(f'{c}', end="")
             # Verifica si se imprime la coma entre los cursos
-            if index != len(cursos_profe)-1:
+            if index != len(profe["cursos"])-1:
                 print(',', end="")
         print("]")

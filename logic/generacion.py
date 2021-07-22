@@ -70,18 +70,22 @@ def generar_excel_profes(profes):
     ws.cell(row=1, column=5, value="curso")
 
     fila = 2
+    # Recorre los profesores
     for profe in profes:
-        for disponibilidad in profe["disponibilidad"]:
-            # Escribe la disponibilidad en el archivo
-            ws.cell(row=fila, column=1, value=profe["profesor"])
-            ws.cell(row=fila, column=2, value=disponibilidad["dia"])
-            ws.cell(row=fila, column=3, value=disponibilidad["hi"])
-            ws.cell(row=fila, column=4, value=disponibilidad["hf"])
-            # Verifica si se asignó un curso a la disponibilidad del profesor
-            if "curso" in disponibilidad:
-                ws.cell(row=fila, column=5, value=disponibilidad["curso"])
-            # Incrementa la fila del archivo
-            fila = fila + 1
+        # Recorre los dias del horario
+        for dia in profe['horario']:
+            # Recorre la disponibilidad del dia
+            for disponibilidad in dia:
+                # Escribe la disponibilidad en el archivo
+                if disponibilidad['asignado']:
+                    ws.cell(row=fila, column=5, value=disponibilidad["curso"])
+                if disponibilidad['disponible']:
+                    ws.cell(row=fila, column=1, value=profe["profesor"])
+                    ws.cell(row=fila, column=2, value=disponibilidad["dia"])
+                    ws.cell(row=fila, column=3, value=disponibilidad["hi"])
+                    ws.cell(row=fila, column=4, value=disponibilidad["hf"])
+                    #  Incrementa la fila del archivo
+                    fila = fila + 1
 
     # Guarda el Excel en disco
     wb.template = False
@@ -162,10 +166,58 @@ def generar_excel_horarios(profes):
     wb.save('output/resultado_horarios.xlsx')
 
 
+def generar_excel_consolidado_profes(profes):
+    '''
+    Genera el consolidado de profesores
+    '''
+    # Verifica que el directorio de salida exista, de lo contrario lo crea
+    Path("output").mkdir(parents=True, exist_ok=True)
+
+    # Crea el libro de Excel
+    wb = Workbook()
+
+    # Obtiene la hoja activa
+    ws = wb.active
+
+    # Modifica el titulo de la hoja
+    ws.title = "consolidado"
+
+    # Escribe el encabezado
+    ws.cell(row=1, column=1, value="PROFESOR")
+    ws.cell(row=1, column=2, value="TIPO")
+    ws.cell(row=1, column=3, value="CURSOS")
+    ws.cell(row=1, column=4, value="CURSO 1")
+    ws.cell(row=1, column=5, value="CURSO 2")
+    ws.cell(row=1, column=6, value="CURSO 3")
+    ws.cell(row=1, column=7, value="CURSO 4")
+    ws.cell(row=1, column=8, value="CURSO 5")
+    ws.cell(row=1, column=9, value="CURSO 6")
+
+    # Recorre los profesores
+    fila = 2
+    for profe in profes:
+        # Escribe los datos del profesor
+        ws.cell(row=fila, column=1, value=profe["profesor"])
+        ws.cell(row=fila, column=2, value=profe["tipo"])
+        ws.cell(row=fila, column=3, value=len(profe["cursos"]))
+
+        # Recorre los cursos
+        for index, curso in enumerate(profe["cursos"]):
+            ws.cell(row=fila, column=index+4, value=curso)
+
+        # Incrementa la fila
+        fila = fila + 1
+
+    # Guarda el Excel en disco
+    wb.template = False
+    wb.save('output/consolidado_profesores.xlsx')
+
+
 def generar_excel(cursos, profes):
     '''
     Genera la asignación resultante en archivos de Excel
     '''
-    # generar_excel_cursos(cursos)
-    # generar_excel_profes(profes)
+    generar_excel_cursos(cursos)
+    generar_excel_profes(profes)
     generar_excel_horarios(profes)
+    generar_excel_consolidado_profes(profes)

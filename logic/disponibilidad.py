@@ -51,6 +51,7 @@ def agregar_disponibilidad(disponibilidad):
         nuevo_profe = {
             'profesor': disponibilidad['profesor'],
             'tipo': disponibilidad["tipo"],
+            'cursos': [],
             'horario': obtener_horario_inicial()
         }
 
