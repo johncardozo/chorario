@@ -1,4 +1,6 @@
 from openpyxl import load_workbook
+from .globales import obtener_horario_inicial, dias
+
 profes = []
 
 
@@ -16,7 +18,7 @@ def cargar_disponibilidad():
     fila = 2
     # Recorre la disponibilidad de los profesores
     while ws.cell(row=fila, column=1).value is not None:
-        # Crea la disponibiliad horaria del profesor
+        # Crea la disponibilidad horaria del profesor
         disponibilidad = {
             "profesor": ws.cell(row=fila, column=1).value,
             "dia": ws.cell(row=fila, column=2).value,
@@ -36,28 +38,40 @@ def agregar_disponibilidad(disponibilidad):
     '''
     Agrega la disponibilidad
     '''
-    # Intenta encontrar el profesor
+    # Busca el profesor en la lista de profesores
     profe_encontrado = next(
         (p for p in profes if p["profesor"] == disponibilidad["profesor"]), None)
 
-    # Crea la nueva disponibilidad
-    nueva_disp = {
-        "dia": disponibilidad["dia"],
-        "hi": disponibilidad["hi"],
-        "hf": disponibilidad["hf"],
-        "disponible": True
-    }
+    # Obtiene el numero de dia de la disponibilidad
+    numero_dia = dias.index(disponibilidad['dia'])
 
     # Verifica si existe el profesor
     if profe_encontrado is None:
-        # Crea el nuevo curso
+        # Crea un nuevo profesor
         nuevo_profe = {
-            "profesor": disponibilidad["profesor"],
-            "tipo": disponibilidad["tipo"],
-            "disponibilidad": [nueva_disp]
+            'profesor': disponibilidad['profesor'],
+            'tipo': disponibilidad["tipo"],
+            'horario': obtener_horario_inicial()
         }
-        # Agrega el curso al chorario
+
+        # Busca la franja del profesor para asignar la disponibilidad
+        franja_disponibilidad = next(
+            (f for f in nuevo_profe['horario'][numero_dia] if f['hi'] == disponibilidad['hi']), None)
+
+        # Modifica la disponibilidad
+        if franja_disponibilidad:
+            franja_disponibilidad['disponible'] = True
+            #franja_disponibilidad['profesor'] = disponibilidad['profesor']
+
+        # Agrega el profesor a la lista
         profes.append(nuevo_profe)
+
     else:
-        # Agrega la disponibilidad al curso encontrado en el chorario
-        profe_encontrado["disponibilidad"].append(nueva_disp)
+        # Busca la franja del profesor para asignar la disponibilidad
+        franja_disponibilidad = next(
+            (f for f in profe_encontrado['horario'][numero_dia] if f['hi'] == disponibilidad['hi']), None)
+
+        # Modifica la disponibilidad
+        if franja_disponibilidad:
+            franja_disponibilidad['disponible'] = True
+            #franja_disponibilidad['profesor'] = disponibilidad['profesor']

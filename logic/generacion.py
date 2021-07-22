@@ -1,6 +1,8 @@
 from openpyxl import Workbook
 from openpyxl.styles import PatternFill
 from pathlib import Path
+from .globales import obtener_numero_franja, obtener_numero_dia
+
 import collections
 
 
@@ -121,51 +123,38 @@ def generar_excel_horarios(profes):
         ws.cell(row=1, column=7, value="VIERNES").fill = encabezado_fill
         ws.cell(row=1, column=8, value="SABADO").fill = encabezado_fill
 
-        # Genera los encabezados de las listas
-        encabezados_hora = set()
-        for disponibilidad in profe["disponibilidad"]:
-            encabezados_hora.add(disponibilidad["hi"])
+        # Recorre el horario del profesor
+        for horario_dia in profe['horario']:
+            # Recorre el dia
+            for index, franja in enumerate(horario_dia):
+                # Obtiene el numero de franja
+                fila = obtener_numero_franja(franja['hi']) + 2
 
-        # Obtiene y ordena los encabezados de las horas
-        lista = list(encabezados_hora)
-        lista.sort()
+                # Escribe la hora inicio y hora fin
+                ws.cell(
+                    row=fila,
+                    column=1,
+                    value=franja['hi'])
+                ws.cell(
+                    row=fila,
+                    column=2,
+                    value=franja['hf'])
 
-        # Recorre la disponibilidad del profesor
-        for disponibilidad in profe["disponibilidad"]:
-            # Obtiene la fila donde se escribe la HI y HF
-            pos = lista.index(int(disponibilidad["hi"])) + 2
+                # Obtiene el numero de columna dado el dia
+                columna = obtener_numero_dia(franja['dia']) + 3
 
-            # Escribe las horas de inicio y fin
-            ws.cell(row=pos, column=1, value=disponibilidad["hi"])
-            ws.cell(row=pos, column=2, value=disponibilidad["hf"])
+                # Escribe el valor del horario
+                if franja['disponible'] and not franja['asignado']:
+                    ws.cell(
+                        row=fila,
+                        column=columna).fill = no_asignado_fill
+                if franja['disponible'] and franja['asignado']:
+                    ws.cell(
+                        row=fila,
+                        column=columna,
+                        value=franja['curso']).fill = asignado_fill
 
-            # Calcula la columna
-            columna = 0
-            if disponibilidad["dia"] == 'M':
-                columna = 3
-            if disponibilidad["dia"] == 'T':
-                columna = 4
-            if disponibilidad["dia"] == 'W':
-                columna = 5
-            if disponibilidad["dia"] == 'R':
-                columna = 6
-            if disponibilidad["dia"] == 'F':
-                columna = 7
-            if disponibilidad["dia"] == 'S':
-                columna = 8
-
-            # Verifica si se asignó un curso a la disponibilidad del profesor
-            if "curso" in disponibilidad:
-                # Asigna el background asignado
-                ws.cell(row=pos, column=columna).fill = asignado_fill
-                # Escribe el curso en la celda
-                ws.cell(row=pos, column=columna,
-                        value=disponibilidad["curso"])
-            else:
-                # Asigna el background no asignado
-                ws.cell(row=pos, column=columna).fill = no_asignado_fill
-
-    # Elimina la hoja original
+                # Elimina la hoja original
     wb.remove(wb['Sheet'])
 
     # Guarda el Excel en disco
@@ -177,6 +166,6 @@ def generar_excel(cursos, profes):
     '''
     Genera la asignación resultante en archivos de Excel
     '''
-    generar_excel_cursos(cursos)
-    generar_excel_profes(profes)
+    # generar_excel_cursos(cursos)
+    # generar_excel_profes(profes)
     generar_excel_horarios(profes)

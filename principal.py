@@ -22,13 +22,13 @@ def main():
     lista_profes = disponibilidad.cargar_disponibilidad()
 
     # Asigna los profesores a los cursos y visceversa
-    asignacion.asignar(lista_cursos, lista_profes)
+    #asignacion.asignar(lista_cursos, lista_profes)
 
     # Genera el Excel resultado de la asignación
     generacion.generar_excel(lista_cursos, lista_profes)
 
     # Muestra el reporte de ejecución
-    reporte.mostrar_reporte(lista_cursos, lista_profes)
+    #reporte.mostrar_reporte(lista_cursos, lista_profes)
 
     # Muestra el tiempo de ejecución
     print('\nProceso finalizado!')
