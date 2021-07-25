@@ -48,4 +48,4 @@ Este programa genera 2 archivos de excel ubicados en el folder `output` y un arc
 
 - resultado_cursos.xlsx
 - resultado_profesores.xlsx
-- archivo de log
+- consolidado_profesores.xlsx
