@@ -1,3 +1,4 @@
+import math
 
 franjas = [
     {'hi': 700, 'hf': 715},
@@ -64,6 +65,21 @@ franjas = [
 
 dias = ['M', 'T', 'W', 'R', 'F', 'S']
 
+colores = [
+    '00FFFF00', '00FF00FF', '0000FFFF', '00000000', '00FFFFFF',  # 5-9
+    '00FF0000', '0000FF00', '000000FF', '00FFFF00', '00FF00FF',  # 10-14
+    '0000FFFF', '00800000', '00008000', '00000080', '00808000',  # 15-19
+    '00800080', '00008080', '00C0C0C0', '00808080', '009999FF',  # 20-24
+    '00993366', '00FFFFCC', '00CCFFFF', '00660066', '00FF8080',  # 25-29
+    '000066CC', '00CCCCFF', '00000080', '00FF00FF', '00FFFF00',  # 30-34
+    '0000FFFF', '00800080', '00800000', '00008080', '000000FF',  # 35-39
+    '0000CCFF', '00CCFFFF', '00CCFFCC', '00FFFF99', '0099CCFF',  # 40-44
+    '00FF99CC', '00CC99FF', '00FFCC99', '003366FF', '0033CCCC',  # 45-49
+    '0099CC00', '00FFCC00', '00FF9900', '00FF6600', '00666699',  # 50-54
+    '00969696', '00003366', '00339966', '00003300', '00333300',  # 55-59
+    '00993300', '00993366', '00333399', '00333333',  # 60-63
+]
+
 
 def obtener_horario_inicial():
     horario = []
@@ -98,3 +114,50 @@ def obtener_numero_franja(hora_inicial):
 
 def obtener_numero_dia(dia):
     return dias.index(dia)
+
+
+def generar_franjas_descuadradas(franja):
+    # Inicializa los limites a generar
+    inicio = int(franja['hi'])
+    fin = int(franja['hf']) + 1
+
+    # Inicializa la lista de franjas
+    franjas = []
+
+    # Genera las franjas de 15 minutos
+    actual = inicio
+    hora_inicio = actual
+    while actual < fin:
+        # Calcula la nueva franja
+        if actual % 100 == 45:
+            actual = actual + 55
+        else:
+            actual = actual + 15
+
+        # Agrega la franja
+        franjas.append({
+            'hi': hora_inicio,
+            'hf': actual
+        })
+        # Actualiza la hora inicial
+        hora_inicio = actual
+
+    return franjas
+
+
+def color_es_oscuro(color):
+    # Transforma HEX a RGB
+    rgb = tuple(int(color[i:i+2], 16) for i in (0, 2, 4))
+
+    # Obtiene los valores R, G, B
+    r = rgb[0]
+    g = rgb[1]
+    b = rgb[2]
+
+    # Calcula el HSP basado en el R, G y B
+    hsp = math.sqrt(0.241 * (r * r) +
+                    0.691 * (g * g) +
+                    0.068 * (b * b))
+
+    # Si el HSP está por debajo de 127.5, el color es oscuro
+    return hsp <= 127.5
